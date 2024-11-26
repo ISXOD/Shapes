@@ -2,10 +2,6 @@
 
 sf::Vector2f Shape::defaultPostion_ = sf::Vector2f(0.0f, 0.0f);
 
-void Shape::draw(std::shared_ptr<sf::RenderWindow> window) const {
-    window->draw(*shape_);
-}
-
 void Shape::SetColor(const sf::Color& color) {
     color_ = color;
     shape_->setFillColor(color_);
@@ -59,7 +55,7 @@ Window::Window() {
 }
 
 void Window::draw(const Shape* shape) {
-    shapes_.push_back(shape);
+    shapes_.push_back(shape->shape_);
 }
 
 void Window::display() {
@@ -72,7 +68,7 @@ void Window::display() {
 
         window_->clear();
         for (auto s : shapes_) {
-            s->draw(window_);
+            window_->draw(*s);
         }
         window_->display();
     }

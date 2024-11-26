@@ -2,10 +2,28 @@
 #include<vector>
 #include <SFML/Graphics.hpp>
 
-class Shape {
-public:
-    void draw(std::shared_ptr<sf::RenderWindow> window) const;
+class Shape;
 
+class Window {
+public:
+    Window();
+
+    void draw(const Shape* shape);
+
+    void display();
+
+private:
+    std::vector<std::shared_ptr<const sf::Shape>> shapes_;
+    std::shared_ptr<sf::RenderWindow> window_;
+    unsigned int width_ = 1000;
+    unsigned int height_ = 1000;
+};
+
+
+class Shape {
+    friend void Window::draw(const Shape* shape);
+
+public:
     void SetColor(const sf::Color& color);
 
     virtual void SetPosition(const sf::Vector2f& centre) = 0;
@@ -25,6 +43,8 @@ class Circle : public Shape {
 public:
     Circle(float radius = 30, const sf::Vector2f& centre = defaultPostion_);
 
+    virtual ~Circle() = default;
+
     void SetPosition(const sf::Vector2f& centre) override;
 
 protected:
@@ -43,7 +63,9 @@ protected:
 
 class Square : public Shape {
 public:
-    Square(float height = 50, const sf::Vector2f& upperLeftCorner = defaultPostion_); 
+    Square(float height = 50, const sf::Vector2f& upperLeftCorner = defaultPostion_);
+
+    virtual ~Square() = default;
 
     void SetPosition(const sf::Vector2f& upperLeftCorner) override;
 
@@ -59,20 +81,4 @@ public:
 
 protected:
     float width_;
-};
-
-class Window {
-public:
-    Window();
-
-    void draw(const Shape* shape);
-
-    void display();
-
-private:
-    std::vector<const Shape*> shapes_;  // Достаточно удалить сам вектор,
-                                        // т. к. указатели указывают на не динамические объекты, которые будут уничтожены когда сами выйдут из области видимости
-    std::shared_ptr<sf::RenderWindow> window_;
-    unsigned int width_ = 1000;
-    unsigned int height_ = 1000;
 };
