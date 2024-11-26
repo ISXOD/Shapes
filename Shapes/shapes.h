@@ -12,6 +12,8 @@ public:
 
     static void SetDefaultPosition(const sf::Vector2f& upperLeftCorner);
 
+    virtual ~Shape() = default;
+
 protected:
     static sf::Vector2f defaultPostion_;
     std::shared_ptr<sf::Shape> shape_;
@@ -41,7 +43,7 @@ protected:
 
 class Square : public Shape {
 public:
-    Square(float height = 50, const sf::Vector2f& upperLeftCorner = defaultPostion_);
+    Square(float height = 50, const sf::Vector2f& upperLeftCorner = defaultPostion_); 
 
     void SetPosition(const sf::Vector2f& upperLeftCorner) override;
 
@@ -68,7 +70,8 @@ public:
     void display();
 
 private:
-    std::vector<const Shape*> shapes_;
+    std::vector<const Shape*> shapes_;  // Достаточно удалить сам вектор,
+                                        // т. к. указатели указывают на не динамические объекты, которые будут уничтожены когда сами выйдут из области видимости
     std::shared_ptr<sf::RenderWindow> window_;
     unsigned int width_ = 1000;
     unsigned int height_ = 1000;

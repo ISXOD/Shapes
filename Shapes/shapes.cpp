@@ -71,10 +71,9 @@ void Window::display() {
         }
 
         window_->clear();
-        for (auto shape : shapes_) {
-            shape->draw(window_);
+        for (auto s : shapes_) {
+            s->draw(window_);
         }
         window_->display();
     }
-    std::vector<int> s;
 }
